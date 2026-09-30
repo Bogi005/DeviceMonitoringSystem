@@ -1,8 +1,15 @@
 package com.company.devicemonitoring.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class DeviceRequest {
+    @NotBlank(message = "Serial number is required")
     private String serialNumber;
+
+    @NotBlank(message = "Name is required")
     private String name;
+
+    @NotBlank(message = "Location is required")
     private String location;
 
     public DeviceRequest(){}

@@ -1,0 +1,12 @@
+# Java / Maven
+**/target/
+**/.mvn/
+
+# IntelliJ
+**/.idea/
+**/*.iml
+**/.vscode/
+
+# React
+**/node_modules/
+**/dist/

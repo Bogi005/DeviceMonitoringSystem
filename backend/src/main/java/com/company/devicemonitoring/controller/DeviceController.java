@@ -3,6 +3,7 @@ package com.company.devicemonitoring.controller;
 import com.company.devicemonitoring.dto.DeviceRequest;
 import com.company.devicemonitoring.dto.DeviceResponse;
 import com.company.devicemonitoring.service.DeviceService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class DeviceController {
     // Create device
     @PostMapping
     public ResponseEntity<DeviceResponse> createDevice(
-            @RequestBody DeviceRequest request
+            @Valid @RequestBody DeviceRequest request
     ){
         DeviceResponse createdDevice = deviceService.createDevice(request);
         return new ResponseEntity<>(createdDevice, HttpStatus.CREATED);
