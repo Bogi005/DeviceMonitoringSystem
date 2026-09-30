@@ -2,6 +2,9 @@ package com.company.devicemonitoring.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "devices")
 public class Device {
@@ -17,6 +20,9 @@ public class Device {
 
     @Column(nullable = false)
     private String location;
+
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Reading> readings = new ArrayList<>();
 
     public Device() {}
 
