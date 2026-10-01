@@ -5,7 +5,6 @@
 function DeviceRow( {device, isSelected, onSelect, onDelete } ) {
     return (
         <tr style={{ backgroundColor: isSelected ? '#e6f7ff' : 'transparent' }}>
-            <td>{device.id}</td>
             <td>{device.serialNumber}</td>
             <td>{device.name}</td>
             <td>{device.location}</td>
