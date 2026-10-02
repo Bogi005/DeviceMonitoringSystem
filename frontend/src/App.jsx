@@ -25,7 +25,10 @@ function App() {
 
     // load devices upon loading the page
     useEffect(() => {
-        fetchDevices();
+        //fetchDevices();
+        getDevices().then(
+            response => {setDevices(response.data);}
+        ).catch(() => {setError("Error fetching devices.");});
     }, []);
 
     // PUT /api/devices
