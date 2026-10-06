@@ -1,53 +1,103 @@
+import { useState, useEffect } from "react";
+import {deleteDevice, getDevices} from "../api.js";
+import InputField from "./InputField.jsx";
 import DeviceRow from "./DeviceRow.jsx";
 
 // devices = list of devices
-function DeviceList({ devices, selectedDevice, onSelectDevice, onDeleteDevice }) {
-    if (devices.length === 0) {
-        return (
-            <p>
-                No devices found.
-            </p>
-        )
+function DeviceList({ selectedDevice, onSelectDevice, onError }) {
+    const [devices, setDevices] = useState([]);
+    const [serialNumber, setSerialNumber] = useState('');
+    const [location, setLocation] = useState('');
+
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const pageSize = 5;
+
+    const fetchDevices = async () => {
+        try {
+            const response = await getDevices({
+                serialNumber: serialNumber,
+                location: location,
+                page: page,
+                size: pageSize,
+                sort: 'id,asc'
+            });
+            setDevices(response.data.content);
+            setTotalPages(response.data.totalPages);
+        } catch (error) {
+            onError(error.response?.data?.message || 'Error fetching devices.');
+        }
     }
+
+    useEffect(() => {
+        fetchDevices();
+    }, [page, serialNumber, location]);
+
+    const handleDeleteDevice = async (id) => {
+            try {
+                await deleteDevice(id);
+                if (selectedDevice?.id === id) {
+                    onSelectDevice(null);
+                }
+                await fetchDevices();
+            }
+            catch (error) {
+                onError(error.response?.data?.message || 'Error deleting the device.');
+            }
+        }
+
     return (
-        <section style={{ marginBottom: '20px' }}>
-            <h2>
-                All Devices
-            </h2>
+        <div style={{ padding: '20px' }}>
+            <h2>Devices</h2>
+
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+                <h3>Search devices</h3>
+                <InputField
+                    name="SerialNumber"
+                    value={serialNumber}
+                    placeholderText="Search by serial number"
+                    onChange={(e) => {setSerialNumber(e.target.value); setPage(0);}}
+                />
+                <InputField
+                    name="Location"
+                    value={location}
+                    placeholderText="Search by location"
+                    onChange={(e) => {setLocation(e.target.value); setPage(0);}}
+                />
+            </div>
+
             <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                    <tr style={{ backgroundColor: '#f2f2f2' }}>
-                        <th>
-                            Device ID
-                        </th>
-                        <th>
-                            Serial number
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Location
-                        </th>
-                        <th colSpan={2}>
-                            Actions
-                        </th>
+                    <tr>
+                        <th>Serial Number</th>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {devices.map(device => (
+                    {devices.map((device) => (
                         <DeviceRow
-                            key={device.id}
                             device={device}
-                            isSelected={selectedDevice?.id === device.id}
+                            isSelected={selectedDevice.id === device.id}
                             onSelect={onSelectDevice}
-                            onDelete={onDeleteDevice}
+                            onDelete={handleDeleteDevice}
                         />
                     ))}
                 </tbody>
             </table>
-        </section>
-    )
+
+            <div style={{ marginTop: '15px', display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <button disabled={page === 0} onClick={() => setPage(p => p - 1)}>
+                    Previous
+                </button>
+                <span>Page {page + 1} out of {totalPages || 1}</span>
+                <button disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)}>
+                    Next
+                </button>
+            </div>
+        </div>
+    );
 }
 
 export default DeviceList;

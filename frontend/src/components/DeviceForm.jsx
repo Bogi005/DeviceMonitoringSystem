@@ -1,8 +1,9 @@
 import { useState } from "react";
 import InputField from "./InputField.jsx";
 import SubmitButton from "./SubmitButton.jsx";
+import {createDevice} from "../api.js";
 
-function DeviceForm( {onDeviceCreated, onError} ) {
+function DeviceForm( { onError} ) {
     const [data, setData] = useState({
         serialNumber: "",
         name: "",
@@ -17,7 +18,7 @@ function DeviceForm( {onDeviceCreated, onError} ) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await onDeviceCreated(data);
+            await createDevice(data);
             setData({
                 serialNumber: "",
                 name: "",
