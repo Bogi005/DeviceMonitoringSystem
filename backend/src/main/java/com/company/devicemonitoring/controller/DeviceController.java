@@ -4,10 +4,6 @@ import com.company.devicemonitoring.dto.DeviceRequest;
 import com.company.devicemonitoring.dto.DeviceResponse;
 import com.company.devicemonitoring.service.DeviceService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,25 +28,11 @@ public class DeviceController {
         return new ResponseEntity<>(createdDevice, HttpStatus.CREATED);
     }
 
-    // Search for devices
-    @GetMapping
-    public ResponseEntity<Page<DeviceResponse>> getDevices(
-            @RequestParam(defaultValue = "") String serialNumber,
-            @RequestParam(defaultValue = "") String location,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id,asc") String[] sort
-    ){
-        Sort.Direction direction = sort[1].equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Pageable  pageable = PageRequest.of(page, size, Sort.by(direction, sort[0]));
-        Page<DeviceResponse> devices = deviceService.searchDevices(serialNumber, location, pageable);
-        return ResponseEntity.ok(devices);
-    }
-
     // GET /api/devices
     // Show all devices
-    @GetMapping("/all")
-    public ResponseEntity<List<DeviceResponse>> getAllDevices(){
+    @GetMapping
+    public ResponseEntity<List<DeviceResponse>> getAllDevices(
+    ){
         List<DeviceResponse> devices = deviceService.getAllDevices();
         return ResponseEntity.ok(devices);
     }
@@ -63,17 +45,6 @@ public class DeviceController {
     ){
         DeviceResponse device = deviceService.getDeviceById(id);
         return ResponseEntity.ok(device);
-    }
-
-    // PUT /api/devices/{id}
-    // Update device
-    @PutMapping("/{id}")
-    public ResponseEntity<DeviceResponse> updateDeviceById(
-            @PathVariable Long id,
-            @Valid @RequestBody DeviceRequest request
-    ){
-        DeviceResponse updatedDevice = deviceService.updateDeviceById(id, request);
-        return ResponseEntity.ok(updatedDevice);
     }
 
     // Delete /api/devices/{id}

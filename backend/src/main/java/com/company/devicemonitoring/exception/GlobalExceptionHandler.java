@@ -1,6 +1,5 @@
 package com.company.devicemonitoring.exception;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,16 +26,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        ExceptionResponse error = new ExceptionResponse("Data Integrity Violation");
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
-    }
-
-    //     Unexpected exception
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponse> handleGlobalException(Exception ex) {
-        ExceptionResponse error = new ExceptionResponse("An unexpected error occurred: " + ex.getMessage());
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    // Unexpected exception
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ExceptionResponse> handleGlobalException(Exception ex) {
+//        ExceptionResponse error = new ExceptionResponse("An unexpected error occurred: " + ex.getMessage());
+//        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 }
