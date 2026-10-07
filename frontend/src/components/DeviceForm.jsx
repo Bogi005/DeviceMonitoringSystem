@@ -3,7 +3,7 @@ import InputField from "./InputField.jsx";
 import SubmitButton from "./SubmitButton.jsx";
 import {createDevice} from "../api.js";
 
-function DeviceForm( { onError} ) {
+function DeviceForm( { onAdd, onError} ) {
     const [data, setData] = useState({
         serialNumber: "",
         name: "",
@@ -24,6 +24,7 @@ function DeviceForm( { onError} ) {
                 name: "",
                 location: ""
             });
+            onAdd();
         }
         catch (error) {
             onError(error.response?.data?.message || 'Error occurred while submitting device form');

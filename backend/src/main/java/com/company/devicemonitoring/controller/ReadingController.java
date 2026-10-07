@@ -34,7 +34,7 @@ public class ReadingController {
         return new ResponseEntity<>(createdReading, HttpStatus.CREATED);
     }
 
-    // GET /api/devices/{deviceId}/readings
+    // GET /api/devices/{deviceId}/readings/all
     // Show device readings
     @GetMapping("/all")
     public ResponseEntity<List<ReadingResponse>> getReadingsByDeviceId(

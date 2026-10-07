@@ -20,7 +20,7 @@ export const deleteDevice = (id) => api.delete(`/devices/${id}`);
 export const getReadings = ( deviceId, params = {} ) => {
     return api.get(`/devices/${deviceId}/readings`, { params });
 }
-export const getAllReadings = (deviceId) => api.get(`/devices/${deviceId}/readings`)
+export const getAllReadings = (deviceId) => api.get(`/devices/${deviceId}/readings/all`)
 export const addReading = (deviceId, data) => api.post(`/devices/${deviceId}/readings`, data);
 
 export default api;

@@ -21,7 +21,7 @@ public class DeviceService {
     // Create
     public DeviceResponse createDevice(DeviceRequest request) {
         Device device = new Device(
-                request.getSerialNumber(),
+                request.getSerialNumber().toUpperCase(),
                 request.getName(),
                 request.getLocation()
         );

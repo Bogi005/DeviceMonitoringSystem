@@ -1,14 +1,21 @@
 import { useState } from "react";
 import SubmitButton from "./SubmitButton.jsx";
+import {addReading} from "../api.js";
 
-function ReadingForm({ onAddReading, onError }) {
+function ReadingForm({ device, onAdd, onError }) {
     const [value, setValue] = useState("");
 
     const handleSubmit = async (event) => {
+        if (!device) return;
         event.preventDefault();
         try {
-            await onAddReading(parseFloat(value));
+            const data = {
+                value: parseFloat(value)
+            };
+            await addReading(device.id, data);
             setValue("");
+            onAdd();
+            onError('');
         }
         catch (error) {
             onError(error.response?.data?.message || 'Error occurred while submitting device form');
@@ -20,7 +27,7 @@ function ReadingForm({ onAddReading, onError }) {
             <input
                 name="Reading value"
                 type="number"
-                step="any"
+                step="0.01"
                 placeholder="Enter reading value"
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
