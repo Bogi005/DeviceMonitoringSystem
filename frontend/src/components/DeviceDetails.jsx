@@ -31,7 +31,7 @@ function DeviceDetails({device, onError}) {
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         if(device) fetchReadings().then(() => {});
-    }, [device, fetchReadings, page, refreshTrigger]);
+    }, [device, page, refreshTrigger]);
 
     useEffect(() => {
         const fetchAllReadings = async () => {
@@ -46,7 +46,7 @@ function DeviceDetails({device, onError}) {
         }
         
         fetchAllReadings().then(() => {});
-    }, [device, onError]);
+    }, [device]);
 
     const chartData = [...chartReadings].reverse().map(
         r => ({
