@@ -46,7 +46,7 @@ function DeviceDetails({device, onError}) {
         }
         
         fetchAllReadings().then(() => {});
-    }, [device]);
+    }, [device, refreshTrigger]);
 
     const chartData = [...chartReadings].reverse().map(
         r => ({
