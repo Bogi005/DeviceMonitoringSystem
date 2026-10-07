@@ -7,6 +7,8 @@ import com.company.devicemonitoring.entity.Reading;
 import com.company.devicemonitoring.exception.DeviceNotFoundException;
 import com.company.devicemonitoring.repository.DeviceRepository;
 import com.company.devicemonitoring.repository.ReadingRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,6 +46,18 @@ public class ReadingService {
                 savedReading.getId(),
                 savedReading.getValue(),
                 savedReading.getTimestamp()
+        );
+    }
+
+    // Get sorted page
+    public Page<ReadingResponse> getSortedReadings(Long deviceId, Pageable pageable) {
+        Page<Reading> readingPage = readingRepository.findByDeviceId(deviceId, pageable);
+        return readingPage.map(
+                reading -> new ReadingResponse(
+                        reading.getId(),
+                        reading.getValue(),
+                        reading.getTimestamp()
+                )
         );
     }
 

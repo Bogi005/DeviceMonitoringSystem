@@ -5,6 +5,8 @@ import com.company.devicemonitoring.dto.DeviceResponse;
 import com.company.devicemonitoring.entity.Device;
 import com.company.devicemonitoring.exception.DeviceNotFoundException;
 import com.company.devicemonitoring.repository.DeviceRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +39,14 @@ public class DeviceService {
                             .toList();
     }
 
+    // Get Page
+    public Page<DeviceResponse> searchDevices(String serialNumber, String location, Pageable pageable) {
+        Page<Device> devicePage = deviceRepository.findBySerialNumberContainingIgnoreCaseAndLocationContainingIgnoreCase(
+                serialNumber, location, pageable
+        );
+        return devicePage.map(this::mapToResponse);
+    }
+
     // Get by id
     public DeviceResponse getDeviceById(Long id) {
         Device device = deviceRepository.findById(id)
@@ -50,6 +60,16 @@ public class DeviceService {
             throw new DeviceNotFoundException("Device with id: " + id + " not found");
         }
         deviceRepository.deleteById(id);
+    }
+
+    // Update
+    public DeviceResponse updateDeviceById(Long id, DeviceRequest request) {
+        Device updated = deviceRepository.findById(id).orElseThrow(() -> new DeviceNotFoundException("Device with id: " + id + " not found"));
+        updated.setSerialNumber(request.getSerialNumber());
+        updated.setName(request.getName());
+        updated.setLocation(request.getLocation());
+        Device savedDevice = deviceRepository.save(updated);
+        return mapToResponse(savedDevice);
     }
 
     // Entity -> DTO
