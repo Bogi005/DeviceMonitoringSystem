@@ -76,19 +76,14 @@ PostgreSQL se može pokrenuti komandom
 Backend aplikacije može da se pokrene komandom 
 ```docker compose up backend -d```.
 
-### Mogu se pokrenuti oba kontejnera komandom
+## Kako pokrenuti Frontend
+Frontend se može pokrenuti komandom:
+``` docker compose up frontend -d ``` 
+
+### Mogu se pokrenuti svi kontejneri komandom
 ```bash 
 docker compose up -d
 ```
-
-## Kako pokrenuti Frontend
-Frontend se može pokrenuti komandama:
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Nakon prvog puta može se izostaviti druga komanda.
 
 ## Url delova projekta
 Frontend URL: http://localhost:5173<br>
