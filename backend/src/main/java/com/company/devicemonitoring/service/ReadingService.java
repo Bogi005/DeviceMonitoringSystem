@@ -37,16 +37,52 @@ public class ReadingService {
     }
 
     // Add new reading for device
+    @Transactional
     public ReadingResponse addReading(
             Long deviceId,
             ReadingRequest request
     ) {
-        return saveAndCheckAlarm(deviceId, request);
+        Device device = deviceRepository.findById(deviceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Device with id: " + deviceId + " not found"));
+        Reading reading = new Reading(
+                request.getValue(),
+                LocalDateTime.now(),
+                device
+        );
+        Reading savedReading = readingRepository.save(reading);
+
+        if (request.getValue() >= ALARM_THRESHOLD) {
+            String message = "Alarm threshold exceeded";
+            Alarm alarm = new Alarm(device, AlarmType.HIGH_VALUE_THRESHOLD, message);
+            alarmRepository.save(alarm);
+        }
+
+        if (request.getValue() < 0.0) {
+            String message = "Alarm negative value";
+            Alarm alarm = new Alarm(device, AlarmType.LOW_VALUE_THRESHOLD, message);
+            alarmRepository.save(alarm);
+        }
+
+        return new ReadingResponse(
+                savedReading.getId(),
+                savedReading.getValue(),
+                savedReading.getTimestamp()
+        );
     }
 
     // Get sorted page
-    public Page<ReadingResponse> getSortedReadings(Long deviceId, Pageable pageable) {
-        Page<Reading> readingPage = readingRepository.findByDeviceId(deviceId, pageable);
+    public Page<ReadingResponse> getSortedReadings(
+            Long deviceId,
+            LocalDateTime from,
+            LocalDateTime to,
+            Pageable pageable
+    ) {
+        Page<Reading> readingPage;
+        if (from != null && to != null) {
+            readingPage = readingRepository.findByDeviceIdAndTimestampBetween(deviceId, from, to, pageable);
+        } else {
+            readingPage = readingRepository.findByDeviceId(deviceId, pageable);
+        }
         return readingPage.map(
                 reading -> new ReadingResponse(
                         reading.getId(),
@@ -67,29 +103,5 @@ public class ReadingService {
                         reading.getValue(),
                         reading.getTimestamp()
                 )).toList();
-    }
-
-    @Transactional
-    public ReadingResponse saveAndCheckAlarm(Long deviceId, ReadingRequest request) {
-        Device device = deviceRepository.findById(deviceId)
-                .orElseThrow(() -> new ResourceNotFoundException("Device with id: " + deviceId + " not found"));
-        Reading reading = new Reading(
-                request.getValue(),
-                LocalDateTime.now(),
-                device
-        );
-        Reading savedReading = readingRepository.save(reading);
-
-        if (request.getValue() >= ALARM_THRESHOLD) {
-            String message = "Alarm threshold exceeded";
-            Alarm alarm = new Alarm(device, AlarmType.HIGH_VALUE_THRESHOLD, message);
-            alarmRepository.save(alarm);
-        }
-
-        return new ReadingResponse(
-                savedReading.getId(),
-                savedReading.getValue(),
-                savedReading.getTimestamp()
-        );
     }
 }
