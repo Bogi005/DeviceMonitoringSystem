@@ -4,7 +4,7 @@ import com.company.devicemonitoring.dto.ReadingRequest;
 import com.company.devicemonitoring.dto.ReadingResponse;
 import com.company.devicemonitoring.entity.Device;
 import com.company.devicemonitoring.entity.Reading;
-import com.company.devicemonitoring.exception.DeviceNotFoundException;
+import com.company.devicemonitoring.exception.ResourceNotFoundException;
 import com.company.devicemonitoring.repository.DeviceRepository;
 import com.company.devicemonitoring.repository.ReadingRepository;
 import com.company.devicemonitoring.service.ReadingService;
@@ -66,7 +66,7 @@ public class ReadingServiceTest {
 
         // When & Then
         assertThrows(
-                DeviceNotFoundException.class,
+                ResourceNotFoundException.class,
                 () -> readingService.addReading(nonExistentDeviceId, request)
         );
 

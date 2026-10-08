@@ -3,7 +3,7 @@ package com.company.devicemonitoring.service;
 import com.company.devicemonitoring.dto.DeviceRequest;
 import com.company.devicemonitoring.dto.DeviceResponse;
 import com.company.devicemonitoring.entity.Device;
-import com.company.devicemonitoring.exception.DeviceNotFoundException;
+import com.company.devicemonitoring.exception.ResourceNotFoundException;
 import com.company.devicemonitoring.repository.DeviceRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,21 +50,21 @@ public class DeviceService {
     // Get by id
     public DeviceResponse getDeviceById(Long id) {
         Device device = deviceRepository.findById(id)
-                .orElseThrow(() -> new DeviceNotFoundException("Device with id: " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Device with id: " + id + " not found"));
         return mapToResponse(device);
     }
 
     // Delete
     public void deleteDeviceById(Long id) {
         if (!deviceRepository.existsById(id)) {
-            throw new DeviceNotFoundException("Device with id: " + id + " not found");
+            throw new ResourceNotFoundException("Device with id: " + id + " not found");
         }
         deviceRepository.deleteById(id);
     }
 
     // Update
     public DeviceResponse updateDeviceById(Long id, DeviceRequest request) {
-        Device updated = deviceRepository.findById(id).orElseThrow(() -> new DeviceNotFoundException("Device with id: " + id + " not found"));
+        Device updated = deviceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Device with id: " + id + " not found"));
         updated.setSerialNumber(request.getSerialNumber());
         updated.setName(request.getName());
         updated.setLocation(request.getLocation());

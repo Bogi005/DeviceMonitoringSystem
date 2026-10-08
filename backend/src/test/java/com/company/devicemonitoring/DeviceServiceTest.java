@@ -3,7 +3,7 @@ package com.company.devicemonitoring;
 import com.company.devicemonitoring.dto.DeviceRequest;
 import com.company.devicemonitoring.dto.DeviceResponse;
 import com.company.devicemonitoring.entity.Device;
-import com.company.devicemonitoring.exception.DeviceNotFoundException;
+import com.company.devicemonitoring.exception.ResourceNotFoundException;
 import com.company.devicemonitoring.repository.DeviceRepository;
 import com.company.devicemonitoring.service.DeviceService;
 import org.junit.jupiter.api.Test;
@@ -55,8 +55,8 @@ public class DeviceServiceTest {
         when(deviceRepository.findById(id)).thenReturn(Optional.empty());
 
         // WHEN
-        DeviceNotFoundException exception = assertThrows(
-                DeviceNotFoundException.class,
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
                 () -> deviceService.getDeviceById(id)
         );
 

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     // DeviceNotFoundException
-    @ExceptionHandler(DeviceNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleDeviceNotFoundException(DeviceNotFoundException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleDeviceNotFoundException(ResourceNotFoundException ex) {
         ExceptionResponse error = new ExceptionResponse(ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
