@@ -24,6 +24,9 @@ public class Device {
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Reading> readings = new ArrayList<>();
 
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Alarm> alarms = new ArrayList<>();
+
     public Device() {}
 
     public Device(String serialNumber, String name, String location) {

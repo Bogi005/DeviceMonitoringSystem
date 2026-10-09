@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {getAllReadings, getReadingsPage} from "../api.js";
+import {getAllReadings, getDeviceAlarmsPage, getReadingsPage, resolveAlarm} from "../api.js";
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import ReadingForm from "./ReadingForm.jsx";
 import PageControls from "./PageControls.jsx";
@@ -11,6 +11,9 @@ function DeviceDetails({device, onError}) {
     const [totalPages, setTotalPages] = useState(0);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const pageSize = 10;
+    const [alarms, setAlarms] = useState([]);
+    const [alarmPage, setAlarmPage] = useState(0);
+    const [alarmTotalPage, setAlarmTotalPage] = useState(0);
 
     const fetchReadings = async () => {
         try {
@@ -33,6 +36,20 @@ function DeviceDetails({device, onError}) {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         if(device) fetchReadings().then(() => {});
     }, [device, page, refreshTrigger]);
+
+    useEffect(() => {
+        getDeviceAlarmsPage(device.id, {
+            page: alarmPage,
+            size: 5
+        })
+            .then(data => {
+                setAlarms(data.data.content);
+                setAlarmTotalPage(data.data.totalPages);
+            })
+            .catch(error => {
+                onError(error.response?.data?.message || 'Error occurred while fetching device alarms.');
+            });
+    }, [device, alarmPage, refreshTrigger]);
 
     useEffect(() => {
         const fetchAllReadings = async () => {
@@ -59,6 +76,27 @@ function DeviceDetails({device, onError}) {
     );
 
     const handleAddReading = () => {
+        setRefreshTrigger(refreshTrigger => refreshTrigger + 1);
+    }
+
+    const formatTimestamp = (timestamp) => {
+        if (!timestamp) return '-';
+
+        const date = new Date(timestamp);
+
+        return new Intl.DateTimeFormat('sr-RS', { // or 'en-US' for English format
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false, // Use 24-hour clock
+        }).format(date);
+    };
+
+    const resolve = async (id) => {
+        await resolveAlarm(id);
         setRefreshTrigger(refreshTrigger => refreshTrigger + 1);
     }
 
@@ -108,6 +146,43 @@ function DeviceDetails({device, onError}) {
                 page={page}
                 totalPages={totalPages}
                 setPage={setPage}
+            />
+
+            <h3>Alarms</h3>
+            <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Message</th>
+                        <th>Time</th>
+                        <th>Resolved</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { alarms.map((alarm) => (
+                        <tr key={alarm.id}>
+                            <td>{alarm.alarmType}</td>
+                            <td>{alarm.message}</td>
+                            <td>{formatTimestamp(alarm.alarmTime)}</td>
+                            <td>{alarm.resolved ? "Resolved" : ""}</td>
+                            <td>
+                                <button onClick={() => {
+                                    resolve(alarm.id)
+                                        .then(() => {})
+                                }}>
+                                    resolve
+                                </button>
+                            </td>
+                        </tr>
+                    )) }
+                </tbody>
+            </table>
+
+            <PageControls
+                page={alarmPage}
+                totalPages={alarmTotalPage}
+                setPage={setAlarmPage}
             />
         </div>
     )

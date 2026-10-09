@@ -14,7 +14,7 @@ function App() {
     }
 
     return (
-        <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#f4f6f8', minHeight: '100vh', margin: 0}}>
+        <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#f4f6f8', minHeight: '80vh', margin: 0}}>
             <header style={{
                 backgroundColor: '#1e293b',
                 color: 'white',
