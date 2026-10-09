@@ -11,6 +11,15 @@ public class DeviceStatisticsResponse {
     public DeviceStatisticsResponse() {
     }
 
+    public DeviceStatisticsResponse(Long deviceId, String deviceName, Long readingCount, Double avgValue, Double maxValue, Long unresolvedAlarmCount) {
+        this.deviceId = deviceId;
+        this.deviceName = deviceName;
+        this.readingCount = readingCount;
+        this.avgValue = avgValue;
+        this.maxValue = maxValue;
+        this.unresolvedAlarmCount = unresolvedAlarmCount;
+    }
+
     public Long getDeviceId() {
         return deviceId;
     }

@@ -12,6 +12,14 @@ public class SystemStatisticsResponse {
     public SystemStatisticsResponse() {
     }
 
+    public SystemStatisticsResponse(Long totalDeviceCount, Long totalReadingCount, Long totalUnresolvedAlarmCount, List<String> devicesWithoutReadings, List<DeviceStatisticsResponse> deviceStatistics) {
+        this.totalDeviceCount = totalDeviceCount;
+        this.totalReadingCount = totalReadingCount;
+        this.totalUnresolvedAlarmCount = totalUnresolvedAlarmCount;
+        this.devicesWithoutReadings = devicesWithoutReadings;
+        this.deviceStatistics = deviceStatistics;
+    }
+
     public Long getTotalDeviceCount() {
         return totalDeviceCount;
     }
