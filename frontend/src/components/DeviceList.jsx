@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {deleteDevice, getDevicesPage} from "../api.js";
 import InputField from "./InputField.jsx";
 import DeviceRow from "./DeviceRow.jsx";
+import PageControls from "./PageControls.jsx";
 
 // devices = list of devices
 function DeviceList({ refresh, selectedDevice, onSelectDevice, onError }) {
@@ -88,15 +89,11 @@ function DeviceList({ refresh, selectedDevice, onSelectDevice, onError }) {
                 </tbody>
             </table>
 
-            <div style={{ marginTop: '15px', display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <button disabled={page === 0} onClick={() => setPage(p => p - 1)}>
-                    Previous
-                </button>
-                <span>Page {page + 1} out of {totalPages || 1}</span>
-                <button disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)}>
-                    Next
-                </button>
-            </div>
+            <PageControls
+                page={page}
+                totalPages={totalPages}
+                setPage={setPage}
+            />
         </div>
     );
 }
