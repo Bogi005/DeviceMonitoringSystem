@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {deleteDevice, getDevices} from "../api.js";
+import {deleteDevice, getDevicesPage} from "../api.js";
 import InputField from "./InputField.jsx";
 import DeviceRow from "./DeviceRow.jsx";
 
@@ -15,7 +15,7 @@ function DeviceList({ refresh, selectedDevice, onSelectDevice, onError }) {
 
     const fetchDevices = async () => {
         try {
-            const response = await getDevices({
+            const response = await getDevicesPage({
                 serialNumber: serialNumber,
                 location: location,
                 page: page,

@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {getAllReadings, getReadings} from "../api.js";
+import {getAllReadings, getReadingsPage} from "../api.js";
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import ReadingForm from "./ReadingForm.jsx";
 
@@ -13,7 +13,7 @@ function DeviceDetails({device, onError}) {
 
     const fetchReadings = async () => {
         try {
-            const response = await getReadings(
+            const response = await getReadingsPage(
                 device.id,
                 {
                     page: page,
