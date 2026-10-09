@@ -167,7 +167,7 @@ function DeviceDetails({device, onError}) {
                             <td>{formatTimestamp(alarm.alarmTime)}</td>
                             <td>{alarm.resolved ? "Resolved" : ""}</td>
                             <td>
-                                <button onClick={() => {
+                                <button disabled={alarm.resolved} onClick={() => {
                                     resolve(alarm.id)
                                         .then(() => {})
                                 }}>
