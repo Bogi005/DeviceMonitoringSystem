@@ -81,7 +81,7 @@ public class ReadingServiceIntegrationTest {
     @Test
     @DisplayName("Integration test: Device with no readings.")
     public void deviceWithNoReadings() {
-        // GIVEN
+        // GIVEN (setup method)
 
         // WHEN
         SystemStatisticsResponse stats = statisticsService.getSystemStatistics();
