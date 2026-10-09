@@ -37,7 +37,7 @@ function DeviceForm( { onAdd, onError} ) {
             <h2>
                 New Device
             </h2>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                 <InputField
                     name="SerialNumber"
                     placeholderText="Serial Number"

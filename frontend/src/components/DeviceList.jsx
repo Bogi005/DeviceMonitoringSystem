@@ -51,20 +51,22 @@ function DeviceList({ refresh, selectedDevice, onSelectDevice, onError }) {
         <div style={{ padding: '20px' }}>
             <h2>Devices</h2>
 
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-                <h3>Search devices</h3>
-                <InputField
-                    name="SerialNumberFilter"
-                    value={serialNumber}
-                    placeholderText="Search by serial number"
-                    onChange={(e) => {setSerialNumber(e.target.value); setPage(0);}}
-                />
-                <InputField
-                    name="LocationFilter"
-                    value={location}
-                    placeholderText="Search by location"
-                    onChange={(e) => {setLocation(e.target.value); setPage(0);}}
-                />
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px'}}>
+                <h3>Search devices:</h3>
+                <div style={{ display: 'flex', flex: 1, gap: '10px', paddingLeft: '50px', justifyContent: 'left' }}>
+                    <InputField
+                        name="SerialNumberFilter"
+                        value={serialNumber}
+                        placeholderText="Search by serial number"
+                        onChange={(e) => {setSerialNumber(e.target.value); setPage(0);}}
+                    />
+                    <InputField
+                        name="LocationFilter"
+                        value={location}
+                        placeholderText="Search by location"
+                        onChange={(e) => {setLocation(e.target.value); setPage(0);}}
+                    />
+                </div>
             </div>
 
             <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
