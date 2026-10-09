@@ -22,6 +22,7 @@ public class StatisticsService {
                 SELECT
                     d.id AS device_id,
                     d.name AS device_name,
+                    d.serial_number AS device_serial_number,
                     COUNT(DISTINCT r.id) AS reading_count,
                     COALESCE(ROUND(AVG(r.value)::numeric, 2), 0) AS avg_reading_value,
                     COALESCE(MAX(r.value), 0) AS max_reading_value,
@@ -38,6 +39,7 @@ public class StatisticsService {
                     new DeviceStatisticsResponse(
                             res.getLong("device_id"),
                             res.getString("device_name"),
+                            res.getString("device_serial_number"),
                             res.getLong("reading_count"),
                             res.getDouble("avg_reading_value"),
                             res.getDouble("max_reading_value"),
@@ -77,6 +79,7 @@ public class StatisticsService {
                 SELECT
                     d.id AS device_id,
                     d.name AS device_name,
+                    d.serial_number AS device_serial_number,
                     COUNT(DISTINCT r.id) AS reading_count,
                     COALESCE(ROUND(AVG(r.value)::numeric, 2), 0) AS avg_reading_value,
                     COALESCE(MAX(r.value), 0) AS max_reading_value,
@@ -95,6 +98,7 @@ public class StatisticsService {
                         new DeviceStatisticsResponse(
                                 res.getLong("device_id"),
                                 res.getString("device_name"),
+                                res.getString("device_serial_number"),
                                 res.getLong("reading_count"),
                                 res.getDouble("avg_reading_value"),
                                 res.getDouble("max_reading_value"),

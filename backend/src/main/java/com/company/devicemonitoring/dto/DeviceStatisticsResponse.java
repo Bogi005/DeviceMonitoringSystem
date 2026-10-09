@@ -3,12 +3,23 @@ package com.company.devicemonitoring.dto;
 public class DeviceStatisticsResponse {
     Long deviceId;
     String deviceName;
+    String serialNumber;
     Long readingCount;
     Double avgValue;
     Double maxValue;
     Long unresolvedAlarmCount;
 
     public DeviceStatisticsResponse() {
+    }
+
+    public DeviceStatisticsResponse(Long deviceId, String deviceName, String serialNumber, Long readingCount, Double avgValue, Double maxValue, Long unresolvedAlarmCount) {
+        this.deviceId = deviceId;
+        this.deviceName = deviceName;
+        this.serialNumber = serialNumber;
+        this.readingCount = readingCount;
+        this.avgValue = avgValue;
+        this.maxValue = maxValue;
+        this.unresolvedAlarmCount = unresolvedAlarmCount;
     }
 
     public DeviceStatisticsResponse(Long deviceId, String deviceName, Long readingCount, Double avgValue, Double maxValue, Long unresolvedAlarmCount) {
@@ -66,5 +77,13 @@ public class DeviceStatisticsResponse {
 
     public void setUnresolvedAlarmCount(Long unresolvedAlarmCount) {
         this.unresolvedAlarmCount = unresolvedAlarmCount;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 }
