@@ -37,7 +37,7 @@ public class ReadingServiceTest {
         Long deviceId = 1L;
         Device device = new Device("DEV-001", "Barometer", "Belgrade");
         device.setId(deviceId);
-        ReadingRequest readingRequest = new ReadingRequest(1023.4);
+        ReadingRequest readingRequest = new ReadingRequest(13.4);
         Reading savedReading = new Reading(readingRequest.getValue(), LocalDateTime.now(), device);
         savedReading.setId(10L);
 
@@ -50,7 +50,7 @@ public class ReadingServiceTest {
         // THEN
         assertNotNull(response);
         assertEquals(10L, response.getId());
-        assertEquals(1023.4, response.getValue());
+        assertEquals(13.4, response.getValue());
 
         verify(deviceRepository, times(1)).findById(deviceId);
         verify(readingRepository, times(1)).save(any(Reading.class));

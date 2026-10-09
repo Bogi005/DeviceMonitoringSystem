@@ -47,7 +47,7 @@ public class StatisticsService {
 
         String devicesWithoutReadingSQL = """
                 SELECT
-                    d.name
+                    d.serial_number
                 FROM devices d
                 LEFT JOIN readings r ON d.id = r.device_id
                 WHERE r.id IS NULL
