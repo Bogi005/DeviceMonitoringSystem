@@ -35,10 +35,10 @@ public class AlarmController {
         return ResponseEntity.ok(alarmService.getAlarmsByDeviceId(deviceId, resolved, pageable));
     }
 
-    @PatchMapping("/devices/{deviceId}")
+    @PatchMapping("/devices/{alarmId}")
     public ResponseEntity<AlarmResponse> resolveAlarm(
-            @PathVariable Long deviceId
+            @PathVariable Long alarmId
             ){
-        return ResponseEntity.ok(alarmService.resolveAlarm(deviceId));
+        return ResponseEntity.ok(alarmService.resolveAlarm(alarmId));
     }
 }
