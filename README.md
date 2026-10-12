@@ -58,7 +58,8 @@ device-monitoring-system/
 Da bi pokrenuli aplikaciju pomoću docker kontejnera potrebno je instalirati Docker na korisnikov računar.
 Instalaciju pratite po uputstvu na zvaničnom sajtu: https://www.docker.com/products/docker-desktop/
 ### NodeJS
-Za pokretanje frontend-a potrebno je preuzeti NodeJS sa zvaničnog sajta: https://nodejs.org/en/download
+Za pokretanje frontend-a VAN DOCKERA potrebno je preuzeti NodeJS sa zvaničnog sajta: https://nodejs.org/en/download <br>
+Ako frontend pokrecete u dockeru, ne morate ovo skidati.
 
 ## Kada se prvi put pokreće projekat
 Treba da se pokrene komanda:<br>
@@ -78,7 +79,9 @@ Backend aplikacije može da se pokrene komandom
 
 ## Kako pokrenuti Frontend
 Frontend se može pokrenuti komandom:
-``` docker compose up frontend -d ``` 
+``` docker compose up frontend -d ``` <br>
+Alternativno, ako imate NodeJs, moze se pokrenuti komandama:
+``` npm install ``` ``` npm run dev ```
 
 ### Mogu se pokrenuti svi kontejneri komandom
 ```bash 
