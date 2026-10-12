@@ -14,12 +14,16 @@ function DeviceDetails({device, onError}) {
     const [alarms, setAlarms] = useState([]);
     const [alarmPage, setAlarmPage] = useState(0);
     const [alarmTotalPage, setAlarmTotalPage] = useState(0);
+    const [fromFilter, setFromFilter] = useState("");
+    const [toFilter, setToFilter] = useState("");
 
     const fetchReadings = async () => {
         try {
             const response = await getReadingsPage(
                 device.id,
                 {
+                    from: fromFilter,
+                    to: toFilter,
                     page: page,
                     size: pageSize,
                     sort: 'timestamp,desc'
@@ -35,7 +39,7 @@ function DeviceDetails({device, onError}) {
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         if(device) fetchReadings().then(() => {});
-    }, [device, page, refreshTrigger]);
+    }, [device, fromFilter, toFilter, page, refreshTrigger]);
 
     useEffect(() => {
         getDeviceAlarmsPage(device.id, {
@@ -125,6 +129,33 @@ function DeviceDetails({device, onError}) {
             </div>
 
             <h3>Readings History</h3>
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+                <div style={{ display: 'flex', flex: 1, gap: '15px', paddingLeft: '50px', alignItems: 'center', justifyContent: 'flex-start' }}>
+                    <label style={{ fontWeight: '500', color: '#334155' }}>From:</label>
+                    <input
+                        name="FromFilter"
+                        type="datetime-local"
+                        value={fromFilter}
+                        onChange={(e) => {
+                            setFromFilter(e.target.value);
+                            setPage(0);
+                        }}
+                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1', outline: 'none' }}
+                    />
+
+                    <label style={{ fontWeight: '500', color: '#334155' }}>To:</label>
+                    <input
+                        name="ToFilter"
+                        type="datetime-local"
+                        value={toFilter}
+                        onChange={(e) => {
+                            setToFilter(e.target.value);
+                            setPage(0);
+                        }}
+                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1', outline: 'none' }}
+                    />
+                </div>
+            </div>
             <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                     <tr>
