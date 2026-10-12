@@ -16,14 +16,15 @@ function DeviceDetails({device, onError}) {
     const [alarmTotalPage, setAlarmTotalPage] = useState(0);
     const [fromFilter, setFromFilter] = useState("");
     const [toFilter, setToFilter] = useState("");
+    const [resolvedFilter, setResolvedFilter] = useState(null);
 
     const fetchReadings = async () => {
         try {
             const response = await getReadingsPage(
                 device.id,
                 {
-                    from: fromFilter,
-                    to: toFilter,
+                    from: fromFilter ? fromFilter : undefined,
+                    to: toFilter ? toFilter : undefined,
                     page: page,
                     size: pageSize,
                     sort: 'timestamp,desc'
@@ -43,6 +44,7 @@ function DeviceDetails({device, onError}) {
 
     useEffect(() => {
         getDeviceAlarmsPage(device.id, {
+            resolved: resolvedFilter !== null ? resolvedFilter : undefined,
             page: alarmPage,
             size: 5
         })
@@ -53,7 +55,7 @@ function DeviceDetails({device, onError}) {
             .catch(error => {
                 onError(error.response?.data?.message || 'Error occurred while fetching device alarms.');
             });
-    }, [device, alarmPage, refreshTrigger]);
+    }, [device, resolvedFilter, alarmPage, refreshTrigger]);
 
     useEffect(() => {
         const fetchAllReadings = async () => {
@@ -180,6 +182,24 @@ function DeviceDetails({device, onError}) {
             />
 
             <h3>Alarms</h3>
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', alignItems: 'center' }}>
+                    <label style={{ fontWeight: '500', color: '#334155', paddingLeft: '50px' }}>Status:</label>
+                    <select
+                        value={resolvedFilter === null ? "" : resolvedFilter.toString()}
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            setResolvedFilter(val === "" ? null : val === "true");
+                            setPage(0);
+                        }}
+                        style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1', outline: 'none', backgroundColor: '#fff' }}
+                    >
+                        <option value="">All</option>
+                        <option value="true">Resolved</option>
+                        <option value="false">Unresolved</option>
+                    </select>
+                </div>
+            </div>
             <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                     <tr>
